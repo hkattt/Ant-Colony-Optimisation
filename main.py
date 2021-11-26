@@ -1,9 +1,13 @@
 import pygame as pg
+import pygame.gfxdraw
+import numpy as np
 
 from graph import Graph
+from ant import Ant
 from settings import *
 
 pg.init()
+pg.font.init()
 
 running = True;
 
@@ -13,6 +17,7 @@ clock = pg.time.Clock()
 pg.display.set_caption("Ant Colony Optimisation")
 
 graph = Graph(5)
+ant = Ant(0, graph)
    
 def update():
     """ Updates the particle and button """
@@ -32,7 +37,9 @@ def events():
 def paint():
     """ Draws objects onto the screen """
     screen.fill(GREY)
+    ant.draw_potential(screen, graph)
     graph.draw(screen)
+    ant.draw_ant(screen, graph)
     pg.display.update()
 
 def run():
