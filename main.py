@@ -1,5 +1,4 @@
 import pygame as pg
-import pygame.gfxdraw
 import numpy as np
 
 from graph import Graph
@@ -8,7 +7,6 @@ from settings import *
 
 pg.init()
 pg.font.init()
-
 running = True;
 
 screen = pg.display.set_mode((WIDTH, HEIGHT))
