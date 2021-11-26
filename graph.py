@@ -27,8 +27,7 @@ class Graph():
                 self.edges.add(edge)
 
     def draw(self, screen):
-        for node in self.nodes:
-            node.draw(screen)
         for edge in self.edges:
             edge.draw(screen)
-
+        for node in self.nodes:
+            node.draw(screen)

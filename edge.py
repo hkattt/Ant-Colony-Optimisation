@@ -8,7 +8,7 @@ class Edge():
         self.node2 = node2
 
     def draw(self, screen):
-        pg.draw.line(screen, WHITE, (self.node1.x, self.node1.y), (self.node2.x, self.node2.y))
+        pg.draw.line(screen, LIGHT_GREY, (self.node1.x, self.node1.y), (self.node2.x, self.node2.y))
 
     def __eq__(self, other):
         if isinstance(other, Edge):

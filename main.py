@@ -31,7 +31,7 @@ def events():
                
 def paint():
     """ Draws objects onto the screen """
-    screen.fill(BLACK)
+    screen.fill(GREY)
     graph.draw(screen)
     pg.display.update()
 
