@@ -9,20 +9,19 @@ class Graph():
     def __init__(self, numberOfNodes):
         self.nodes = []
         self.init_nodes(numberOfNodes)
-        self.gen_dist_map()
-        self.inv_distances = 1 / self.distances
+        self.gen_distances()
         self.gen_pheromone_trails()
     
     def init_nodes(self, numberOfNodes):
         for _ in range(numberOfNodes):
-            node = Node(random.randint(20, WIDTH - 20), random.randint(20, HEIGHT - 20))
+            node = Node(random.randint(20, WIDTH - 20), random.randint(100, HEIGHT - 20))
             self.nodes.append(node)
     
     def draw(self, screen):
         for node in self.nodes:
-            node.draw(screen)
+            node.draw(screen)   
 
-    def gen_dist_map(self):
+    def gen_distances(self):
         size = len(self.nodes)
         self.distances = np.zeros(shape=(size, size))
         for i in range(size):
@@ -34,3 +33,24 @@ class Graph():
         size = len(self.nodes)
         self.pheromone_trails = np.full((size, size), 1 / (size - 1))
         np.fill_diagonal(self.pheromone_trails, 0)
+
+    def update_pheromone_trails(self, ants):
+        size = len(self.nodes)
+        pheromone_changes = np.zeros((size, size))
+
+        for ant in ants:
+            path_distance = self.calc_path_distance(ant.path)
+
+            for i in range(len(ant.path)):
+                node_index1, node_index2 = ant.path[i], ant.path[(i + 1) % len(ant.path)]
+                pheromone_changes[node_index1, node_index2] = Q / path_distance
+
+        self.pheromone_trails = (RHO * self.pheromone_trails) + pheromone_changes
+
+    def calc_path_distance(self, path):
+        path_distance = 0
+        for i in range(len(path)):
+            node_index1, node_index2 = path[i], path[(i + 1) % len(path)]
+            node1, node2 = self.nodes[node_index1], self.nodes[node_index2]
+            path_distance += math.dist((node1.x, node1.y), (node2.x, node2.y))
+        return path_distance

@@ -10,10 +10,17 @@ class Ant():
         self.current_index = current_index
         self.allowed = list(range(len(graph.nodes)))
         self.allowed.remove(current_index)
-        self.gen_move_probabilities(graph)
+        self.path = [current_index]
+        self.probabilities = self.gen_move_probabilities(graph)
 
-    def move(self, graph):
-        probabilities = self.gen_move_probabilities(graph)
+    def run_iteration(self, graph):
+        node_indices = list(range(len(graph.nodes)))
+        while len(self.allowed) != 0:
+            self.current_index = np.random.choice(node_indices, p=self.probabilities)
+            self.allowed.remove(self.current_index)
+            self.path.append(self.current_index)
+            self.gen_move_probabilities(graph)
+        return graph.calc_path_distance(self.path)
 
     def gen_move_probabilities(self, graph):
         self.probabilities = np.zeros(len(graph.nodes))
@@ -21,22 +28,11 @@ class Ant():
         den = 0
         for potential_index in self.allowed:
             den += math.pow(graph.pheromone_trails[self.current_index, potential_index], ALPHA) \
-                    * math.pow(graph.inv_distances[self.current_index, potential_index], BETA)
+                    * math.pow(1 / graph.distances[self.current_index, potential_index], BETA)
 
         for potential_index in self.allowed:
             num = math.pow(graph.pheromone_trails[self.current_index, potential_index], ALPHA) \
-                    * math.pow(graph.inv_distances[self.current_index, potential_index], BETA)
+                    * math.pow(1 / graph.distances[self.current_index, potential_index], BETA)
 
             self.probabilities[potential_index] = num / den
-        
-    def draw_ant(self, screen, graph):
-        x, y = graph.nodes[self.current_index].x, graph.nodes[self.current_index].y
-        pg.draw.circle(screen, BLACK, (x, y), 8)
-
-    def draw_potential(self, screen, graph):
-        x, y = graph.nodes[self.current_index].x, graph.nodes[self.current_index].y
-        for potential_index in self.allowed:
-            potential_x, potential_y = graph.nodes[potential_index].x, graph.nodes[potential_index].y
-            colour = np.interp(self.probabilities[potential_index], [0, 1], [22, 255])
-            pg.gfxdraw.line(screen, x, y, potential_x, potential_y, (colour, colour, colour))
-
+        return self.probabilities
