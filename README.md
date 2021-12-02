@@ -5,7 +5,7 @@ Visualises the ant colony optimisation algorithm for the travelling salesman pro
 To start running the algorithm simply press the start button on the screen. If you wish to stop running the algorithm press the stop button on the screen. If you want to generate a new graph press the generate button once the algorithm is paused.
 
 # Demo Video
-
+https://user-images.githubusercontent.com/54300585/144340995-aa0c82fc-97c9-48c8-b680-19d79e6696be.mp4
 
 # Requirements
 This project used Pygame and Numpy. After creating a virtual environment in your desired directory run the following command in your shell: \
