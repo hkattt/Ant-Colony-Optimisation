@@ -3,8 +3,9 @@ from pygame.locals import *
 from math import atan2, cos, hypot, sin
 
 def aaline(screen, color, start_pos, end_pos, width=1):
-    """ Draws wide transparent anti-aliased lines. """
-    # ref https://stackoverflow.com/a/30599392/355230
+    """ Draws wide transparent anti-aliased lines. 
+        NOTE: This is not my original work. Please see the provided
+        reference - https://stackoverflow.com/a/30599392/355230 """
 
     x0, y0 = start_pos
     x1, y1 = end_pos

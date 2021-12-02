@@ -8,4 +8,5 @@ class Node():
         self.y = y
     
     def draw(self, screen):
+        """ Draws the node onto the screen. """
         pg.draw.circle(screen, WHITE, (self.x, self.y), 10)

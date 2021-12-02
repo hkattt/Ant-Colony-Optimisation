@@ -39,7 +39,6 @@ def events():
                 else:
                     simulating = False
                     start_button.text = "Start"
-
             elif gen_button.mouse_over((dX, dY)) and not simulating:
                 reset()
                
@@ -64,11 +63,17 @@ def run():
         paint()
         
 def run_iteration():
+    """ Runs the ant search on the current batch of ants (i.e. explores the graph using
+        the current pheromone trails. This function also draws the best path onto the screen."""
     global ants, best_path, best_path_distance, simulating
     for ant in ants:
+        # Checks if the simulation is still running
         if simulating == False:
             return
+
         distance = ant.run_iteration(graph)
+        """ Checks if the path distance achieved by the current ant is
+            an improvement on the previous best """
         if distance < best_path_distance:
             best_path_distance = distance
             best_path = ant.path
@@ -76,10 +81,13 @@ def run_iteration():
         events()
         paint()
         time.sleep(0.01)
+    # Updates the pheromone trails and creates a new batch of ants
     graph.update_pheromone_trails(ants)
     ants = init_ants(NUMBER_OF_ANTS)
 
 def draw_path(screen, graph, path):
+    """ Draws visual representation of a given path (in the provided graph)
+        onto the screen. """
     for i in range(len(path)):
         node_index1, node_index2 = path[i], path[(i + 1) % len(path)]
         node1 = graph.nodes[node_index1]
@@ -87,6 +95,7 @@ def draw_path(screen, graph, path):
         aaline(screen, WHITE, (node1.x, node1.y), (node2.x, node2.y))
 
 def reset():
+    """ Resets all the program variables. """
     global graph, best_path, best_path_distance, graph, ants, simulating
     best_path = []
     best_path_distance = float('inf')
